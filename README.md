@@ -2,9 +2,13 @@
 
 Takes an STL file and centers the object to the origin
 
-Forked from: https://github.com/lar3ry/OpenSCAD---Move-STL-to-origin
+Forked from: https://github.com/lar3ry/OpenSCAD---Move-STL-to-origin  
 Origional Python script credit: https://www.reddit.com/r/3Dprinting/comments/7ehlfc/python_script_to_find_stl_dimensions/
 
+
+|Before |After|
+|---|---|
+| ![before](./before.gif) | ![after](./aftter.gif) |
 
 Runs in a docker container. Takes one of several environment variables. You may combine 1 or more environment variables depending on your workflow. 
 
@@ -21,6 +25,8 @@ Runs in a docker container. Takes one of several environment variables. You may 
 Take input /tmp/foo.stl and save to foo.sh
 foo.sh can then be sourced for other scripts e.g.
 `source foo.sh; echo "[${XTRANS},${YTRANS},${ZTRANS}]"`
+
+
 
 ```bash
 file="/tmp/foo.stl"
