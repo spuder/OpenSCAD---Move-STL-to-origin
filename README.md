@@ -19,6 +19,9 @@ Runs in a docker container. Takes one of several environment variables. You may 
 | `OUTPUT_STDOUT` | `true` | Prints text to STDOUT
 
 
+A full example of how to use this container can be found in [spuder/CAD-scripts/stl2gif.sh](https://github.com/openscad/openscad/issues/1797) which is used in my template for CAD files [spuder/CAD-template/Makefile](https://github.com/spuder/CAD-template/blob/main/Makefile#L15)
+
+
 ## Usage
 
 1. `-e OUTPUT_BASH_FILE=/output/foo.sh`
