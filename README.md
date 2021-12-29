@@ -1,55 +1,70 @@
-# OpenSCAD---Move-STL-to-origin
-Makes a library tailored to an existing STL file. Move it to the origin in OpenSCAD.
+# stl2origin
 
-Uses a modified version of a Python script, `stldim.py`, by Jamie Bainbridge. His version can be found at:
-  https://www.reddit.com/r/3Dprinting/comments/7ehlfc/python_script_to_find_stl_dimensions/
+Takes an STL file and centers the object to the origin
 
-I often edit STL files to customize, improve, or repair them, and I find that sometimes the object is placed well away from the OpenSCAD origin, and I have to guess at what translation to use to put it at the origin, then fiddle with the translation to fine tune the position. This program will place the object in one of 5 different places, each one touching the origin (where the x, y and z axes meet). You have the choice of placing it in the center or adjacent to the origin, determined by compass directions, NE, NW, SW, SE.
+Forked from: https://github.com/lar3ry/OpenSCAD---Move-STL-to-origin
+Origional Python script credit: https://www.reddit.com/r/3Dprinting/comments/7ehlfc/python_script_to_find_stl_dimensions/
 
-The modified python script, `stldim.py` (included here), when run in the directory of a file you want to place, will generate a file that may be used as a library. It will contain, as well as the code to place the object, comments showing the max and min x, y, and z values (a bounding box), as well as the x, y, and z size of the object (handy for woodworkers laying out cuts for lumber or plywood).
 
-It may be used stand-alone, or as a library.
+Runs in a docker container. Takes one of several environment variables. You may combine 1 or more environment variables depending on your workflow. 
 
-## Prerequisites
+| Variable | Example | Description | 
+|---|---|---|
+| `OUTPUT_BASH_FILE` | `/output/foo.sh` | x,y,z cordinates to a file that can be sourced in bash scripts|
+| `OUTPUT_SCAD_FILE` | `/output/foo.scad` | Generates a simple openscad file to translate the object to origin
+| `OUTPUT_STDOUT` | `true` | Prints text to STDOUT
 
-You will have to install `stl`, `numpy`, and `numpy-stl` Python packages in case you don't have those already.
-
-    pip install stl
-    pip install numpy
-    pip3 install numpy-stl
-
-Thanks to **Carsten Arnholm** for pointing these out to me.
 
 ## Usage
 
-Place the `stldim.py` file where you keep your Python executable scripts. Its usage is like this:
+1. `-e OUTPUT_BASH_FILE=/output/foo.sh`
+Take input /tmp/foo.stl and save to foo.sh
+foo.sh can then be sourced for other scripts e.g.
+`source foo.sh; echo "[${XTRANS},${YTRANS},${ZTRANS}]"`
 
+```bash
+file="/tmp/foo.stl"
+docker run \
+  -e OUTPUT_BASH_FILE=/output/foo.sh \
+  -v $(dirname "$file"):/input \
+  -v $(pwd):/output \
+  --rm spuder/stl2origin:latest \
+  /input/$(basename "$file")
 ```
-./stldim.py [stl file]                # prints the result in stdout
-./stldim.py [stl file] > [scad file]  # writes the result into a .scad file
-```
-
-On a command line, CD to the directory containing the STL you wish to move, and run the script, giving it the name of the STL file as an argument. If you wish, you can redirect the output to a library file as well (see the example below).
-
-## Example
-
-To use the example, place `Hook.stl` and `Hook.SCAD` in the same directory. Using the command line, CD to the directory and run the python script as follows:
-
-```
-./stldim.py Hook.stl > Hook_2origin.scad
-```
-
-Load the `Hook.scad` file.
-Previewing `Hook.scad` will show the object in the NE position.
-Putting an exclamation mark before any one of the `obj2origin(xx);` lines will just display one of the results.
-
-## Running in Docker
-
-In case you prefer to run the script inside a [Docker](https://docs.docker.com/install/) container, a helper script is provided for that. By using that you don't need to install any Python dependencies on your host OS. The commands are:
-
-```
-./run-in-docker.sh [stl file]              # prints the result in stdout
-./run-in-docker.sh [stl file] [scad file]  # writes the result into a .scad file
+```bash
+XSIZE="10.0"
+YSIZE="19.8"
+ZSIZE="11.324"
+XPOS="-65.123"
+YPOS="-37.133"
+ZPOS="126.776"
+XTRANS="65.123"
+YTRANS="37.133"
+ZTRANS="-126.776"
 ```
 
-Because the output includes also the output from the Docker build process, normal *nix piping operators will not work here as desired, and thus `>` is missing from the latter line.
+2. `-e OUTPUT_SCAD_FILE=/output/foo.scad`
+Take input /tmp/foo.stl and write a scad file to $(PWD)/foo.scad
+```bash
+file="/tmp/foo.stl"
+docker run \
+  -e OUTPUT_SCAD_FILE=/output/foo.scad \
+  -v $(dirname "$file"):/input \
+  -v $(pwd):/output \
+  --rm spuder/stl2origin:latest \
+  /input/$(basename "$file")
+```
+
+example foo.scad
+```bash
+translate([ 65.123 , 37.133 , -126.776 ])
+                import("/input/foo.stl");
+```
+
+3. `-e OUTPUT_STDOUT=true`
+Prints output to stdout (as scad format)
+
+```
+translate([ 65.123 , 37.133 , -126.776 ])
+                import("/input/foo.stl");
+```

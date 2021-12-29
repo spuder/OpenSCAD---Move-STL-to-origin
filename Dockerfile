@@ -6,7 +6,5 @@ RUN pip install -U MarkupSafe
 RUN pip3 install --no-cache-dir stl numpy-stl
 
 COPY stldim.py .
-COPY .passed_file.stl .
 
-ENTRYPOINT ["python", "./stldim.py" ]
-CMD [ ".passed_file.stl" ]
+ENTRYPOINT ["python", "./stldim.py"]

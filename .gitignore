@@ -1,3 +1,5 @@
 .DS_Store
 .passed_file.stl
 Hook_2origin.scad
+foo.scad
+foo.sh

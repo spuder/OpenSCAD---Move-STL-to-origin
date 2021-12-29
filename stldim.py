@@ -57,54 +57,72 @@ midy = round(ysize/2,3)
 midz = round(zsize/2,3)
 
 # the logic is easy from there
+if 'OUTPUT_STDOUT' in os.environ:
+    print ("// File:", sys.argv[1])
+    lst = ['obj =("',sys.argv[1],'");']
+    obj = ['\t\timport("',sys.argv[1],'");']
 
-print ("// File:", sys.argv[1])
-lst = ['obj =("',sys.argv[1],'");']
-obj = ['\t\timport("',sys.argv[1],'");']
+    print ("// X size:",xsize)
+    print ("// Y size:", ysize)
+    print ("// Z size:", zsize)
+    print ("// X position:",minx)
+    print ("// Y position:",miny)
+    print ("// Z position:",minz)
 
-print ("// X size:",xsize)
-print ("// Y size:", ysize)
-print ("// Z size:", zsize)
-print ("// X position:",minx)
-print ("// Y position:",miny)
-print ("// Z position:",minz)
-
-#--------------------
-print("NE=1; NW=2; SW=3; SE=4; CTR=5;")
+    #--------------------
+    # print("NE=1; NW=2; SW=3; SE=4; CTR=5;")
 
 
-print ("module obj2origin (where) {")
-print ("\tif (where == NE) {")
-print ("\t\tobjNE ();")
-print("\t}")
-print("")
+    # print ("module obj2origin (where) {")
+    # print ("\tif (where == NE) {")
+    # print ("\t\tobjNE ();")
+    # print("\t}")
+    # print("")
 
-print("\tif (where == NW) {")
-print("\t\ttranslate([",-xsize,",",0,",",0,"])")
-print ("\t\tobjNE ();")
-print("\t}")
-print("")
+    # print("\tif (where == NW) {")
+    # print("\t\ttranslate([",-xsize,",",0,",",0,"])")
+    # print ("\t\tobjNE ();")
+    # print("\t}")
+    # print("")
 
-print ("\tif (where == SW) {")
-print("\t\ttranslate([",-xsize,",",-ysize,",",0,"])")
-print ("\t\tobjNE ();")
-print("\t}")
-print("")
+    # print ("\tif (where == SW) {")
+    # print("\t\ttranslate([",-xsize,",",-ysize,",",0,"])")
+    # print ("\t\tobjNE ();")
+    # print("\t}")
+    # print("")
 
-print ("\tif (where == SE) {")
-print("\t\ttranslate([",0,",",-ysize,",",0,",","])")
-print ("\t\tobjNE ();")
-print("\t}")
-print("")
+    # print ("\tif (where == SE) {")
+    # print("\t\ttranslate([",0,",",-ysize,",",0,",","])")
+    # print ("\t\tobjNE ();")
+    # print("\t}")
+    # print("")
 
-print ("\tif (where == CTR) {")
-print("\ttranslate([",-midx, ",",-midy,",",-midz,"])")
-print ("\t\tobjNE ();")
-print("\t}")
-print("}")
-print("")
+    # print ("\tif (where == CTR) {")
+    # print("\ttranslate([",-midx, ",",-midy,",",-midz,"])")
+    # print ("\t\tobjNE ();")
+    # print("\t}")
+    # print("}")
+    # print("")
+    print("translate([",-minx,",",-miny,",",-minz,"])")
+    print ("".join(obj))
 
-print("module objNE () {")
-print("\ttranslate([",-minx,",",-miny,",",-minz,"])")
-print ("".join(obj))
-print("}")
+if 'OUTPUT_SCAD_FILE' in os.environ:
+    # print("Writing to file:", os.environ['OUTPUT_SCAD_FILE'])
+    with open('/output/foo.scad', 'w') as f:
+        f.write("translate([\",-minx,\",\",-miny,\",\",-minz,\"])\n")
+        f.write("".join(obj))
+        f.close()
+
+if 'OUTPUT_BASH_FILE' in os.environ:
+    # print("Writing to file:", os.environ['OUTPUT_BASH_FILE'])
+    with open('/output/foo.sh', 'w') as f:
+        f.write(f"XSIZE={xsize}"+"\n")
+        f.write(f"YSIZE={ysize}"+"\n")
+        f.write(f"ZSIZE={zsize}"+"\n")
+        f.write(f"XPOS={minx}"+"\n")
+        f.write(f"YPOS={miny}"+"\n")
+        f.write(f"ZPOS={minz}"+"\n")
+        f.write(f"XTRANS={-minx}"+"\n")
+        f.write(f"YTRANS={-miny}"+"\n")
+        f.write(f"ZTRANS={-minz}"+"\n")
+        f.close()
