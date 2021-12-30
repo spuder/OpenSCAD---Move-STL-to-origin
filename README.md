@@ -15,11 +15,14 @@ docker pull spuder/stl2origin:latest
 
 [View on dockerhub](https://hub.docker.com/repository/docker/spuder/stl2origin)
 
+New docker containers are automatically pushed with :octocat: [gitub actions](https://github.com/spuder/OpenSCAD---Move-STL-to-origin/actions) on every tag&release
+
 |Before |After|
 |---|---|
 | ![before](./before.gif) | ![after](./after.gif) |
 
-**Note: This script only centers the stl, it doesn't actually create an animated gif**, but it is super trivial to [add animations as shown here:](https://stackoverflow.com/questions/70468797/how-to-convert-stl-to-rotating-gif-using-openscad/70468907#70468907)
+**Note: This script only centers the png output, it doesn't actually create an animated gif**, but it is super trivial to [add animations as shown here:](https://stackoverflow.com/questions/70468797/how-to-convert-stl-to-rotating-gif-using-openscad/70468907#70468907)
+
 
 Runs in a docker container. Takes one of several environment variables. You may combine 1 or more environment variables depending on your workflow. 
 
@@ -49,6 +52,8 @@ docker run \
   --rm spuder/stl2origin:latest \
   /input/$(basename "$file")
 ```
+
+Will create `foo.sh` with the following content
 ```bash
 XSIZE="10.0"
 YSIZE="19.8"
@@ -59,6 +64,9 @@ ZPOS="126.776"
 XTRANS="65.123"
 YTRANS="37.133"
 ZTRANS="-126.776"
+XMID="xxx" # mid point of the object. Offset by this amount to move origin from corner to center
+YMID="yyy" # mid point of the object. Offset by this amount to move origin from corner to center
+ZMID="zzz" # mid point of the object. Offset by this amount to move origin from corner to center
 ```
 
 1. `-e OUTPUT_SCAD_FILE=/output/foo.scad`
