@@ -6,11 +6,20 @@ Forked from: https://github.com/lar3ry/OpenSCAD---Move-STL-to-origin
 Origional Python script credit: https://www.reddit.com/r/3Dprinting/comments/7ehlfc/python_script_to_find_stl_dimensions/
 
 
+## Dockerhub
+
+`Arm/M1` :apple: and `Intel/AMD` :computer: docker containers are published to dockerhub :whale:
+```
+docker pull spuder/stl2origin:latest
+```
+
+[View on dockerhub](https://hub.docker.com/repository/docker/spuder/stl2origin)
+
 |Before |After|
 |---|---|
-| ![before](./before.gif) | ![after](./aftter.gif) |
+| ![before](./before.gif) | ![after](./after.gif) |
 
-**Note: This script doesn't actually animate a 360 rotation, but it is super trivial to [add animations as shown here:](https://stackoverflow.com/questions/70468797/how-to-convert-stl-to-rotating-gif-using-openscad/70468907#70468907)
+**Note: This script only centers the stl, it doesn't actually create an animated gif**, but it is super trivial to [add animations as shown here:](https://stackoverflow.com/questions/70468797/how-to-convert-stl-to-rotating-gif-using-openscad/70468907#70468907)
 
 Runs in a docker container. Takes one of several environment variables. You may combine 1 or more environment variables depending on your workflow. 
 
