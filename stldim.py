@@ -68,7 +68,9 @@ if 'OUTPUT_STDOUT' in os.environ:
     print ("// X position:",minx)
     print ("// Y position:",miny)
     print ("// Z position:",minz)
-
+    print ("// X midpoint:",midx)
+    print ("// Y midpoint:",midy)
+    print ("// Z midpoint:",midz)
     #--------------------
     # print("NE=1; NW=2; SW=3; SE=4; CTR=5;")
 
@@ -109,7 +111,7 @@ if 'OUTPUT_STDOUT' in os.environ:
 if 'OUTPUT_SCAD_FILE' in os.environ:
     # print("Writing to file:", os.environ['OUTPUT_SCAD_FILE'])
     with open('/output/foo.scad', 'w') as f:
-        f.write("translate([\",-minx,\",\",-miny,\",\",-minz,\"])\n")
+        f.write("translate([\",-minx-midx,\",\",-miny-midy,\",\",-minz-midz,\"])\n")
         f.write("".join(obj))
         f.close()
 
@@ -125,4 +127,7 @@ if 'OUTPUT_BASH_FILE' in os.environ:
         f.write(f"XTRANS={-minx}"+"\n")
         f.write(f"YTRANS={-miny}"+"\n")
         f.write(f"ZTRANS={-minz}"+"\n")
+        f.write(f"XMID={midx}"+"\n")
+        f.write(f"YMID={midy}"+"\n")
+        f.write(f"ZMID={midz}"+"\n")
         f.close()

@@ -10,6 +10,8 @@ Origional Python script credit: https://www.reddit.com/r/3Dprinting/comments/7eh
 |---|---|
 | ![before](./before.gif) | ![after](./aftter.gif) |
 
+**Note: This script doesn't actually animate a 360 rotation, but it is super trivial to [add animations as shown here:](https://stackoverflow.com/questions/70468797/how-to-convert-stl-to-rotating-gif-using-openscad/70468907#70468907)
+
 Runs in a docker container. Takes one of several environment variables. You may combine 1 or more environment variables depending on your workflow. 
 
 | Variable | Example | Description | 
@@ -28,8 +30,6 @@ A full example of how to use this container can be found in [spuder/CAD-scripts/
 Take input /tmp/foo.stl and save to foo.sh
 foo.sh can then be sourced for other scripts e.g.
 `source foo.sh; echo "[${XTRANS},${YTRANS},${ZTRANS}]"`
-
-
 
 ```bash
 file="/tmp/foo.stl"
@@ -52,7 +52,7 @@ YTRANS="37.133"
 ZTRANS="-126.776"
 ```
 
-2. `-e OUTPUT_SCAD_FILE=/output/foo.scad`
+1. `-e OUTPUT_SCAD_FILE=/output/foo.scad`
 Take input /tmp/foo.stl and write a scad file to $(PWD)/foo.scad
 ```bash
 file="/tmp/foo.stl"
@@ -70,7 +70,7 @@ translate([ 65.123 , 37.133 , -126.776 ])
                 import("/input/foo.stl");
 ```
 
-3. `-e OUTPUT_STDOUT=true`
+1. `-e OUTPUT_STDOUT=true`
 Prints output to stdout (as scad format)
 
 ```
